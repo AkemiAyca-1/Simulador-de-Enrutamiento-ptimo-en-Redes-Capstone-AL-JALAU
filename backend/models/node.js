@@ -1,0 +1,6 @@
+export default class Node {
+    constructor(id, label) {
+        this.id = id;
+        this.label = label;
+    }
+}

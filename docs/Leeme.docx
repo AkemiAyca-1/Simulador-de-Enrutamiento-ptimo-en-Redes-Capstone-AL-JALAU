@@ -1,0 +1,62 @@
+
+Método dijkstra(graph, startNode)
+/**
+ * Ejecuta el algoritmo de Dijkstra para encontrar las distancias
+ * mínimas desde un nodo origen hacia todos los demás nodos del grafo.
+ *
+ * @param {number[][]} graph
+ * Matriz de adyacencia del grafo. graph[i][j] representa el costo
+ * de ir del nodo i al nodo j. El valor 0 indica que no existe conexión.
+ *
+ * @param {number} startNode
+ * Nodo desde el cual se calcularán las distancias mínimas.
+ *
+ * @returns {number[]}
+ * Retorna un arreglo donde cada posición contiene la distancia mínima
+ * desde el nodo origen hacia cada nodo del grafo.
+ */
+Qué hace:
+    Calcula el camino más corto desde un nodo origen a todos los demás nodos usando Dijkstra.
+
+
+2. Método minDistance(dist, visited)
+/**
+ * Encuentra el nodo no visitado con la menor distancia actual.
+ *
+ * @param {number[]} dist
+ * Arreglo que contiene las distancias actuales calculadas.
+ *
+ * @param {boolean[]} visited
+ * Arreglo que indica si un nodo ya fue procesado por el algoritmo.
+ *
+ * @returns {number}
+ * Retorna el índice del nodo con la menor distancia no visitada.
+ */
+ Qué hace:
+    Selecciona el siguiente nodo que el algoritmo debe procesar.
+
+
+
+
+
+Método runSimulation()
+/**
+ * Ejecuta la simulación del algoritmo.
+ * Define el grafo, el nodo origen y muestra el resultado
+ * en la página web.
+ */
+Qué hace:
+    Define la matriz del grafo
+    Define el nodo origen
+    Ejecuta Dijkstra
+    Muestra las distancias en pantalla
+
+
+
+ Parte HTML (index.html)
+<button onclick="runSimulation()">Run</button>
+<div id="output"></div>
+
+Qué hace:
+    El botón ejecuta runSimulation()
+    El div muestra el resultado

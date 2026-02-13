@@ -1,4 +1,4 @@
-# Simulador-de-Enrutamiento-ptimo-en-Redes-Capstone-AL-JALAU
+# Simulador-de-Enrutamiento-optimo-en-Redes-Capstone-AL-JALAU
 
 Arquitectura modular basada en separación de responsabilidades, donde el frontend gestiona la interacción del usuario y visualización del grafo, mientras que el backend implementa los modelos matemáticos del sistema, la representación matricial de la red y los algoritmos de optimización (Dijkstra). La persistencia inicial se realizará mediante almacenamiento local, dejando preparada la integración futura con MySQL.
 

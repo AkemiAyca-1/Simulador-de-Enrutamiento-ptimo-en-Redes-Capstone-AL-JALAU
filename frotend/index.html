@@ -2,24 +2,27 @@
 <html>
 <head>
     <title>Simulador Dijkstra</title>
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
 
 <h1>Simulador Académico Dijkstra</h1>
+<div class="container">
+    <div class="controls">
+        <select id="matrixSelector">
+            <option value="0">Matriz ejemplo 1</option>
+            <option value="1">Matriz ejemplo 2</option>
+            <option value="2">Matriz ejemplo 3</option>
+        </select>
 
-<select id="matrixSelector">
-    <option value="0">Matriz ejemplo 1</option>
-    <option value="1">Matriz ejemplo 2</option>
-    <option value="2">Matriz ejemplo 3</option>
-</select>
-
-<button onclick="loadMatrix()">Cargar matriz</button>
-<button onclick="startSimulation()">Iniciar</button>
-<button onclick="nextStep()">Siguiente iteración</button>
-
-<pre id="matrixView"></pre>
-<pre id="output"></pre>
-
+        <button onclick="loadMatrix()">Cargar matriz</button>
+        <button onclick="startSimulation()">Iniciar</button>
+        <button onclick="nextStep()">Siguiente iteración</button>
+    </div>
+    <pre id="matrixView"></pre>
+    <div id="graphView"></div>
+    <pre id="output"></pre>
+</div>
 <script src="app.js"></script>
 <script src="../backend/algorithms/dijkstra.js"></script>
 

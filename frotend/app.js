@@ -32,6 +32,8 @@ function loadMatrix(){
     document.getElementById("matrixView").innerText =
         "Matriz:\n" +
         currentMatrix.map(r=>r.join(" ")).join("\n");
+    
+    drawGraph(currentMatrix)
 }
 
 function startSimulation(){
@@ -52,3 +54,43 @@ function nextStep(){
         stepIndex++;
     }
 }
+
+function drawGraph(matrix) {
+    const nodeCount = matrix.length;
+    const positions = [
+        {x: 100, y: 100},
+        {x: 300, y: 100},
+        {x: 100, y: 300},
+        {x: 300, y: 300}
+    ];
+
+    let svg = `<svg width="400" height="400">`;
+
+    // Dibujar aristas
+    for (let i = 0; i < nodeCount; i++) {
+        for (let j = 0; j < nodeCount; j++) {
+            if (matrix[i][j] !== 0) {
+                const x1 = positions[i].x;
+                const y1 = positions[i].y;
+                const x2 = positions[j].x;
+                const y2 = positions[j].y;
+                const midX = (x1 + x2) / 2;
+                const midY = (y1 + y2) / 2;
+
+                svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black" />`;
+                svg += `<text x="${midX}" y="${midY - 5}" font-size="14" text-anchor="middle">${matrix[i][j]}</text>`;
+            }
+        }
+    }
+
+    // Dibujar nodos
+    for (let i = 0; i < nodeCount; i++) {
+        const {x, y} = positions[i];
+        svg += `<circle cx="${x}" cy="${y}" r="20" fill="white" stroke="black" />`;
+        svg += `<text x="${x}" y="${y + 5}" font-size="16" text-anchor="middle">${i}</text>`;
+    }
+
+    svg += `</svg>`;
+    document.getElementById("graphView").innerHTML = svg;
+}
+

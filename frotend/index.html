@@ -5,25 +5,23 @@
 </head>
 <body>
 
-<h1>Simulador de Enrutamiento</h1>
-<button onclick="runSimulation()">Simular</button>
+<h1>Simulador Académico Dijkstra</h1>
 
+<select id="matrixSelector">
+    <option value="0">Matriz ejemplo 1</option>
+    <option value="1">Matriz ejemplo 2</option>
+    <option value="2">Matriz ejemplo 3</option>
+</select>
+
+<button onclick="loadMatrix()">Cargar matriz</button>
+<button onclick="startSimulation()">Iniciar</button>
+<button onclick="nextStep()">Siguiente iteración</button>
+
+<pre id="matrixView"></pre>
 <pre id="output"></pre>
 
-<script src="../backend/algorithms/dijkstra.js"></script>
 <script src="app.js"></script>
+<script src="../backend/algorithms/dijkstra.js"></script>
 
 </body>
 </html>
-
-
-<!-- Entonces en cada iteracion se mostrara
- 1. Nodo elegido -> vecotr visitado
- 2. suma dist[u] + peso → operación matricial
- 3. actualización del vector dist
-
- Es exactamente la aplicación:
-
-    Matriz de adyacencia → Matriz
-    dist → Vector
-    operaciones → vector + fila de matriz

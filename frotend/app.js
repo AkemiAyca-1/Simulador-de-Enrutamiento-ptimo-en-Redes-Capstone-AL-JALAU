@@ -1,41 +1,54 @@
-function runSimulation() {
-  const graph = [
-    [0, 4, 2, 0], // = Nodo 0
-    // conexión con nodo 1 = costo 4
-    // conexión con nodo 2 = costo 2
-    // no conectado con nodo 3
-    [4, 0, 1, 5], // = Nodo 1
-    //         significa:
-    // conectado a nodo 0 → costo 4
-    // conectado a nodo 2 → costo 1
-    // conectado a nodo 3 → costo 5
-    [2, 1, 0, 8], // = Nodo 2
-    [0, 5, 8, 0], // = Nodo 3
-  ];
+// matrices predeterminadas para que el usuario pueda elegir y simular sin necesidad de ingresar su propia matriz. Esto es útil para pruebas rápidas y demostraciones.
+let matrices = [
+    [
+        [0,4,2,0],
+        [4,0,1,5],
+        [2,1,0,8],
+        [0,5,8,0]
+    ],
+    [
+        [0,10,0,30,100],
+        [10,0,50,0,0],
+        [0,50,0,20,10],
+        [30,0,20,0,60],
+        [100,0,10,60,0]
+    ],
+    [
+        [0,3,0,7],
+        [3,0,4,2],
+        [0,4,0,5],
+        [7,2,5,0]
+    ]
+];
 
-  const startNode = 0; // modificar para que no inicie de 0 a todos.
+let currentMatrix = [];
+let simulationSteps = [];
+let stepIndex = 0;
 
-  const result = dijkstra(graph, startNode);
+function loadMatrix(){
+    const index = document.getElementById("matrixSelector").value;
+    currentMatrix = matrices[index];
 
-  document.getElementById("output").innerText =
-    "Proceso:\n" +
-    result.steps +
-    "\nDistancias finales: " +
-    result.dist.join(", ");
+    document.getElementById("matrixView").innerText =
+        "Matriz:\n" +
+        currentMatrix.map(r=>r.join(" ")).join("\n");
 }
 
-// Esto es una matriz de adyacencia ponderada.
+function startSimulation(){
 
-// Representa una red como:
-// nodos = routers / computadoras
-// valores = costo del enlace (latencia, distancia, tiempo, etc.)
-// 0 = no existe conexión directa
+    const result = dijkstra(currentMatrix,0);
 
-// Otro ejemplo
-// const graph = [
-//     [0, 10, 0, 30, 100],
-//     [10, 0, 50, 0, 0],
-//     [0, 50, 0, 20, 10],
-//     [30, 0, 20, 0, 60],
-//     [100, 0, 10, 60, 0]
-// ];
+    simulationSteps = result.steps.split("\n");
+    stepIndex = 0;
+
+    document.getElementById("output").innerText = "Simulación iniciada\n";
+}
+
+function nextStep(){
+
+    if(stepIndex < simulationSteps.length){
+        document.getElementById("output").innerText +=
+            simulationSteps[stepIndex] + "\n";
+        stepIndex++;
+    }
+}

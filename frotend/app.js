@@ -16,23 +16,20 @@ function loadMatrix() {
     const index = document.getElementById("matrixSelector").value;
     currentMatrix = matrices[index];
 
-    // Actualizar vista de texto
     document.getElementById("matrixView").innerText = currentMatrix.map(r => r.join("  ")).join("\n");
-    document.getElementById("output").innerText = "> Topología cargada correctamente.";
+    document.getElementById("output").innerText = "> Topología cargada.";
 
-    // Limpiar datos previos
     nodes.clear();
     edges.clear();
 
-    // Crear nodos y enlaces para Vis.js
     for (let i = 0; i < currentMatrix.length; i++) {
         nodes.add({ 
             id: i, 
             label: `Router ${i}`, 
             shape: 'dot', 
-            size: 40, // Nodos más grandes
+            size: 50, // Aumentamos el tamaño visual del nodo
             color: { background: '#2c3e50', border: '#34495e' },
-            font: { color: '#ffffff', size: 16 }
+            font: { color: '#ffffff', size: 20 } // Letra más grande
         });
         
         for (let j = 0; j < currentMatrix[i].length; j++) {
@@ -42,12 +39,36 @@ function loadMatrix() {
                     to: j, 
                     label: String(currentMatrix[i][j]), 
                     color: { color: '#bdc3c7' },
-                    width: 3, // Líneas más gruesas
-                    font: { align: 'top', size: 14 }
+                    width: 4, // Líneas más gruesas
+                    font: { size: 16, align: 'top' }
                 });
             }
         }
     }
+
+    const container = document.getElementById('networkCanvas');
+    const data = { nodes, edges };
+    
+    const options = {
+        physics: {
+            enabled: true,
+            barnesHut: { 
+                gravitationalConstant: -4000, // Más fuerza para que se separen más
+                springLength: 250 // Conexiones más largas para ocupar espacio
+            }
+        },
+        interaction: { zoomView: true, dragView: true }
+    };
+    
+    network = new vis.Network(container, data, options);
+
+    // --- ESTO ES LO QUE SOLUCIONA EL TAMAÑO ---
+    network.once("stabilizationIterationsDone", function() {
+        network.fit({
+            animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
+        });
+    });
+}
 
     const container = document.getElementById('networkCanvas');
     const data = { nodes, edges };

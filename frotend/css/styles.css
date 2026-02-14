@@ -1,26 +1,25 @@
-/* Estilo para el lienzo del grafo */
+/* Cambia el alto del lienzo del grafo */
 #networkCanvas {
     width: 100%;
-    height: 55vh;
+    height: 70vh; /* Antes estaba en 55vh, súbelo a 70 o 75 */
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-/* Estilo para la consola de salida */
+/* Cambia el alto de la consola si quieres que se vea más historial */
 #output {
     background-color: #1e1e1e;
-    color: #4af626; /* Verde Matrix */
+    color: #4af626;
     padding: 20px;
     border-radius: 8px;
-    height: 200px;
+    height: 300px; /* Antes estaba en 200px */
     overflow-y: auto;
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.85rem;
     border: 2px solid #333;
 }
-
 /* Animación para los logs */
 .step-entry {
     border-left: 2px solid #0d6efd;
@@ -38,3 +37,4 @@ pre {
     border-radius: 5px;
     font-size: 0.75rem;
 }
+

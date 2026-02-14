@@ -18,17 +18,33 @@ function loadMatrix() {
 
     // Actualizar vista de texto
     document.getElementById("matrixView").innerText = currentMatrix.map(r => r.join("  ")).join("\n");
-    document.getElementById("output").innerText = "> Red cargada. Lista para simular.";
+    document.getElementById("output").innerText = "> Topología cargada correctamente.";
 
-    // Dibujar Grafo
+    // Limpiar datos previos
     nodes.clear();
     edges.clear();
 
+    // Crear nodos y enlaces para Vis.js
     for (let i = 0; i < currentMatrix.length; i++) {
-        nodes.add({ id: i, label: `Router ${i}`, shape: 'dot', size: 20, color: '#2c3e50' });
+        nodes.add({ 
+            id: i, 
+            label: `Router ${i}`, 
+            shape: 'dot', 
+            size: 40, // Nodos más grandes
+            color: { background: '#2c3e50', border: '#34495e' },
+            font: { color: '#ffffff', size: 16 }
+        });
+        
         for (let j = 0; j < currentMatrix[i].length; j++) {
             if (currentMatrix[i][j] !== 0 && i < j) {
-                edges.add({ from: i, to: j, label: String(currentMatrix[i][j]), color: '#bdc3c7', font: { align: 'top' } });
+                edges.add({ 
+                    from: i, 
+                    to: j, 
+                    label: String(currentMatrix[i][j]), 
+                    color: { color: '#bdc3c7' },
+                    width: 3, // Líneas más gruesas
+                    font: { align: 'top', size: 14 }
+                });
             }
         }
     }
@@ -36,43 +52,56 @@ function loadMatrix() {
     const container = document.getElementById('networkCanvas');
     const data = { nodes, edges };
     const options = {
-        physics: { enabled: true, barnesHut: { gravitationalConstant: -2000 } },
-        interaction: { hover: true }
+        physics: {
+            enabled: true,
+            barnesHut: { gravitationalConstant: -3000, springLength: 200 }
+        },
+        interaction: { hover: true, zoomView: true }
     };
+    
     network = new vis.Network(container, data, options);
+
+    // Ajuste automático para que el grafo llene el espacio
+    network.once("stabilizationIterationsDone", function() {
+        network.fit();
+    });
 }
 
 function startSimulation() {
-    if (currentMatrix.length === 0) return alert("¡Carga una matriz primero!");
+    if (currentMatrix.length === 0) return alert("Cargue una matriz primero");
     
-    // Ejecutamos tu algoritmo de dijkstra.js
     const result = dijkstra(currentMatrix, 0);
     simulationSteps = result.steps.split("\n\n").filter(s => s.trim() !== "");
     stepIndex = 0;
 
-    document.getElementById("output").innerHTML = `<div class="text-white">Iniciando cálculo de ruta óptima desde Nodo 0...</div><br>`;
+    document.getElementById("output").innerHTML = `<div class="text-primary fw-bold">Calculando rutas desde Router 0...</div><br>`;
     
-    // Resetear colores de nodos
-    nodes.update(nodes.get().map(n => ({...n, color: '#2c3e50'})));
+    // Resetear colores originales
+    nodes.update(nodes.get().map(n => ({...n, color: {background: '#2c3e50'}})));
 }
 
 function nextStep() {
     if (stepIndex < simulationSteps.length) {
         let stepText = simulationSteps[stepIndex];
         
-        // Resaltar nodo actual en el grafo
+        // Extraer el nodo que Dijkstra está analizando
         let match = stepText.match(/Nodo seleccionado: (\d+)/);
         if (match) {
             let id = parseInt(match[1]);
-            nodes.update({ id: id, color: '#ffc107', size: 25 }); // Naranja brillante
+            // Iluminar el nodo en el mapa
+            nodes.update({ 
+                id: id, 
+                color: { background: '#ffc107' }, // Amarillo resaltado
+                size: 50 // Crece un poco al ser seleccionado
+            });
         }
 
         const out = document.getElementById("output");
         out.innerHTML += `<div class="step-entry">${stepText.replace(/\n/g, '<br>')}</div>`;
-        out.scrollTop = out.scrollHeight; // Auto-scroll
+        out.scrollTop = out.scrollHeight; 
         
         stepIndex++;
     } else {
-        document.getElementById("output").innerHTML += `<div class="text-info mt-2">✔ Simulación completada.</div>`;
+        document.getElementById("output").innerHTML += `<div class="text-success mt-2">✔ Simulación finalizada con éxito.</div>`;
     }
 }

@@ -17,19 +17,20 @@ function loadMatrix() {
     currentMatrix = matrices[index];
 
     document.getElementById("matrixView").innerText = currentMatrix.map(r => r.join("  ")).join("\n");
-    document.getElementById("output").innerText = "> Topología cargada.";
+    document.getElementById("output").innerText = "> Cargando visualización...";
 
     nodes.clear();
     edges.clear();
 
+    // Crear nodos y enlaces
     for (let i = 0; i < currentMatrix.length; i++) {
         nodes.add({ 
             id: i, 
             label: `Router ${i}`, 
             shape: 'dot', 
-            size: 50, // Aumentamos el tamaño visual del nodo
+            size: 40, 
             color: { background: '#2c3e50', border: '#34495e' },
-            font: { color: '#ffffff', size: 20 } // Letra más grande
+            font: { color: '#2c3e50', size: 18, face: 'Arial', strokeWidth: 4, strokeColor: '#ffffff' }
         });
         
         for (let j = 0; j < currentMatrix[i].length; j++) {
@@ -39,8 +40,8 @@ function loadMatrix() {
                     to: j, 
                     label: String(currentMatrix[i][j]), 
                     color: { color: '#bdc3c7' },
-                    width: 4, // Líneas más gruesas
-                    font: { size: 16, align: 'top' }
+                    width: 3,
+                    font: { size: 14, align: 'top' }
                 });
             }
         }
@@ -48,44 +49,21 @@ function loadMatrix() {
 
     const container = document.getElementById('networkCanvas');
     const data = { nodes, edges };
-    
     const options = {
         physics: {
             enabled: true,
-            barnesHut: { 
-                gravitationalConstant: -4000, // Más fuerza para que se separen más
-                springLength: 250 // Conexiones más largas para ocupar espacio
-            }
+            barnesHut: { gravitationalConstant: -4000, springLength: 200 }
         },
         interaction: { zoomView: true, dragView: true }
     };
     
     network = new vis.Network(container, data, options);
 
-    // --- ESTO ES LO QUE SOLUCIONA EL TAMAÑO ---
-    network.once("stabilizationIterationsDone", function() {
-        network.fit({
-            animation: { duration: 1000, easingFunction: 'easeInOutQuad' }
-        });
-    });
-}
-
-    const container = document.getElementById('networkCanvas');
-    const data = { nodes, edges };
-    const options = {
-        physics: {
-            enabled: true,
-            barnesHut: { gravitationalConstant: -3000, springLength: 200 }
-        },
-        interaction: { hover: true, zoomView: true }
-    };
-    
-    network = new vis.Network(container, data, options);
-
-    // Ajuste automático para que el grafo llene el espacio
-    network.once("stabilizationIterationsDone", function() {
+    // SOLUCIÓN AL TAMAÑO: Forzar ajuste después de un breve retraso
+    setTimeout(() => {
         network.fit();
-    });
+        document.getElementById("output").innerText = "> Red lista para simulación.";
+    }, 200);
 }
 
 function startSimulation() {
@@ -95,9 +73,9 @@ function startSimulation() {
     simulationSteps = result.steps.split("\n\n").filter(s => s.trim() !== "");
     stepIndex = 0;
 
-    document.getElementById("output").innerHTML = `<div class="text-primary fw-bold">Calculando rutas desde Router 0...</div><br>`;
+    document.getElementById("output").innerHTML = `<div class="text-primary fw-bold">Iniciando algoritmo...</div><br>`;
     
-    // Resetear colores originales
+    // Resetear colores
     nodes.update(nodes.get().map(n => ({...n, color: {background: '#2c3e50'}})));
 }
 
@@ -105,15 +83,13 @@ function nextStep() {
     if (stepIndex < simulationSteps.length) {
         let stepText = simulationSteps[stepIndex];
         
-        // Extraer el nodo que Dijkstra está analizando
         let match = stepText.match(/Nodo seleccionado: (\d+)/);
         if (match) {
             let id = parseInt(match[1]);
-            // Iluminar el nodo en el mapa
             nodes.update({ 
                 id: id, 
-                color: { background: '#ffc107' }, // Amarillo resaltado
-                size: 50 // Crece un poco al ser seleccionado
+                color: { background: '#ffc107' }, // Resaltado amarillo
+                size: 50 
             });
         }
 
@@ -123,6 +99,6 @@ function nextStep() {
         
         stepIndex++;
     } else {
-        document.getElementById("output").innerHTML += `<div class="text-success mt-2">✔ Simulación finalizada con éxito.</div>`;
+        document.getElementById("output").innerHTML += `<div class="text-success mt-2">✔ Simulación completada.</div>`;
     }
 }

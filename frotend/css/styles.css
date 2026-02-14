@@ -9,14 +9,13 @@ body {
     z-index: 1000;
 }
 
-/* Contenedor del Grafo - MAXIMIZADO */
 #networkCanvas {
     width: 100%;
-    height: 70vh; /* Ocupa el 70% de la altura de la ventana */
+    height: 75vh; /* Ocupa el 75% del alto de la pantalla */
     background-color: #ffffff;
     border: 1px solid #dee2e6;
     border-radius: 15px;
-    box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+    display: block; /* Asegura que se comporte como bloque */
 }
 
 /* Terminal / Consola */
@@ -55,3 +54,4 @@ body {
     border-radius: 6px;
     border: 1px solid #333;
 }
+

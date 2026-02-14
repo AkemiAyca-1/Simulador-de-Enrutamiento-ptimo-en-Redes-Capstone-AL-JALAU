@@ -6,8 +6,7 @@
 <body>
 
 <h1>Simulador de Enrutamiento</h1>
-
-<button onclick="runSimulation()">Ejecutar</button>
+<button onclick="runSimulation()">Simular</button>
 
 <pre id="output"></pre>
 
@@ -16,3 +15,15 @@
 
 </body>
 </html>
+
+
+<!-- Entonces en cada iteracion se mostrara
+ 1. Nodo elegido -> vecotr visitado
+ 2. suma dist[u] + peso → operación matricial
+ 3. actualización del vector dist
+
+ Es exactamente la aplicación:
+
+    Matriz de adyacencia → Matriz
+    dist → Vector
+    operaciones → vector + fila de matriz
